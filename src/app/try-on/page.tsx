@@ -134,6 +134,24 @@ export default function TryOn() {
       }
 
       setProcessedImage(data.result)
+            // Save to localStorage history
+      const historyEntry = {
+        userImage,
+        clothingImage,
+        description: garmentDescription,
+        result: data.result,
+        timestamp: new Date().toISOString(),
+      };
+
+      try {
+        const existing = localStorage.getItem('tryon-history');
+        const parsed = existing ? JSON.parse(existing) : [];
+        const updated = Array.isArray(parsed) ? [...parsed, historyEntry] : [historyEntry];
+        localStorage.setItem('tryon-history', JSON.stringify(updated));
+      } catch (error) {
+        console.error("Failed to save history:", error);
+      }
+      
       console.log("Processed Image:", data.result)
     } catch (error) {
       if (error instanceof Error) {
