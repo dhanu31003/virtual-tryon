@@ -56,8 +56,11 @@ export async function POST(req: Request) {
     console.log('CATEGORY SENT TO REPLICATE:', category);
 
     return NextResponse.json({ result: Array.isArray(output) ? output[0] : output });
-  } catch (error: any) {
-    console.error('Replicate error:', error);
-    return NextResponse.json({ error: error.message || 'Unknown error' }, { status: 500 });
+   } catch (error) {
+    if (error instanceof Error) {
+      console.error('Replicate error:', error.message);
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+    return NextResponse.json({ error: 'Unknown error occurred' }, { status: 500 });
   }
-}
+}  

@@ -22,7 +22,7 @@ export default function HistoryPage() {
         if (Array.isArray(parsed)) {
           setHistory(parsed.reverse()); // Show latest first
         }
-      } catch (err) {
+      } catch {
         console.error('Failed to parse try-on history from localStorage');
       }
     }
