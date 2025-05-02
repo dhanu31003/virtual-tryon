@@ -1,7 +1,7 @@
 // src/app/try-on/page.tsx
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { Upload, X } from 'lucide-react'
 import { useSearchParams } from 'next/navigation'
 
@@ -11,7 +11,8 @@ interface ItemData {
   name: string
 }
 
-export default function TryOn() {
+function TryOnContent() {
+  const searchParams = useSearchParams()
   const [userImage, setUserImage] = useState<File | null>(null)
   const [clothingImage, setClothingImage] = useState<File | null>(null)
   const [userImagePreview, setUserImagePreview] = useState<string | null>(null)
@@ -24,8 +25,6 @@ export default function TryOn() {
   const [isDraggingClothing, setIsDraggingClothing] = useState(false)
   const [isProcessing, setIsProcessing] = useState(false)
   const [error, setError] = useState<string | null>(null)
-
-  const searchParams = useSearchParams()
 
   useEffect(() => {
     const itemParam = searchParams.get('item')
@@ -136,7 +135,7 @@ export default function TryOn() {
       }
 
       setProcessedImage(data.result)
-            // Save to localStorage history
+      // Save to localStorage history
       const historyEntry = {
         userImage,
         clothingImage,
@@ -292,23 +291,21 @@ export default function TryOn() {
           value={garmentDescription}
           onChange={(e) => setGarmentDescription(e.target.value)}
         />
-          <div className="mt-4">
-    <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-2">
-      Garment Category
-    </label>
-    <select
-  name="category"
-  className="..."
-  value={category}
-  onChange={(e) => setCategory(e.target.value)}
->
-  <option value="upper_body">Upper Body</option>
-  <option value="lower_body">Lower Body</option>
-  <option value="dresses">Dresses</option>
-</select>
-
-</div>
-
+        <div className="mt-4">
+          <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-2">
+            Garment Category
+          </label>
+          <select
+            name="category"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+          >
+            <option value="upper_body">Upper Body</option>
+            <option value="lower_body">Lower Body</option>
+            <option value="dresses">Dresses</option>
+          </select>
+        </div>
       </div>
 
       {/* Process Button */}
@@ -340,40 +337,64 @@ export default function TryOn() {
       </div>
 
       {/* Result Section */}
-{processedImage ? (
-  <div className="mt-8">
-    <h2 className="text-xl font-semibold mb-4">Result</h2>
-    <div className="relative aspect-[3/4] bg-gray-100 rounded-lg overflow-hidden">
-      {typeof processedImage === 'string' && (
-        <img
-          src={
-            processedImage.startsWith('data:image')
-              ? processedImage
-              : processedImage.startsWith('http')
-              ? processedImage
-              : `data:image/jpeg;base64,${processedImage}`
-          }
-          alt="Processed try-on result"
-          className="w-full max-w-[400px] mx-auto rounded-xl shadow-lg object-contain"
-        />
-      )}
-    </div>
-  </div>
-) : (
-  userImage && clothingImage && !isProcessing && (
-    <div className="mt-8">
-      <h2 className="text-xl font-semibold mb-4">Result</h2>
-      <div className="bg-gray-100 rounded-lg p-8 flex items-center justify-center min-h-[400px]">
-        <div className="text-center text-gray-600">
-          <p className="mb-2">Click Generate Try-On to see the result</p>
-          <p className="text-sm">
-            The AI will process your images and show the virtual try-on result here.
-          </p>
+      {processedImage ? (
+        <div className="mt-8">
+          <h2 className="text-xl font-semibold mb-4">Result</h2>
+          <div className="relative aspect-[3/4] bg-gray-100 rounded-lg overflow-hidden">
+            {typeof processedImage === 'string' && (
+              <img
+                src={
+                  processedImage.startsWith('data:image')
+                    ? processedImage
+                    : processedImage.startsWith('http')
+                    ? processedImage
+                    : `data:image/jpeg;base64,${processedImage}`
+                }
+                alt="Processed try-on result"
+                className="w-full max-w-[400px] mx-auto rounded-xl shadow-lg object-contain"
+              />
+            )}
+          </div>
         </div>
-      </div>
-    </div>
+      ) : (
+        userImage && clothingImage && !isProcessing && (
+          <div className="mt-8">
+            <h2 className="text-xl font-semibold mb-4">Result</h2>
+            <div className="bg-gray-100 rounded-lg p-8 flex items-center justify-center min-h-[400px]">
+              <div className="text-center text-gray-600">
+                <p className="mb-2">Click Generate Try-On to see the result</p>
+                <p className="text-sm">
+                  The AI will process your images and show the virtual try-on result here.
+                </p>
+              </div>
+            </div>
+          </div>
         )
       )}
     </div>
+  )
+}
+
+// Loading fallback component
+function TryOnLoading() {
+  return (
+    <div className="max-w-6xl mx-auto px-4 py-8">
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-gray-900">Virtual Try-On</h1>
+        <p className="mt-2 text-gray-600">Loading...</p>
+      </div>
+      <div className="animate-pulse">
+        <div className="bg-gray-200 h-64 rounded-lg mb-4"></div>
+        <div className="bg-gray-200 h-64 rounded-lg"></div>
+      </div>
+    </div>
+  )
+}
+
+export default function TryOn() {
+  return (
+    <Suspense fallback={<TryOnLoading />}>
+      <TryOnContent />
+    </Suspense>
   )
 }
