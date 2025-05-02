@@ -18,6 +18,7 @@ export default function TryOn() {
   const [clothingImagePreview, setClothingImagePreview] = useState<string | null>(null)
   const [clothingName, setClothingName] = useState<string | null>(null)
   const [garmentDescription, setGarmentDescription] = useState<string>('')
+  const [category, setCategory] = useState<string>('upper_body')
   const [processedImage, setProcessedImage] = useState<string | null>(null)
   const [isDraggingUser, setIsDraggingUser] = useState(false)
   const [isDraggingClothing, setIsDraggingClothing] = useState(false)
@@ -117,6 +118,7 @@ export default function TryOn() {
       formData.append('personImage', userImage)
       formData.append('clothingImage', clothingImage)
       formData.append('garmentDescription', garmentDescription)
+      formData.append('category', category)
 
       const response = await fetch('/api/process-tryon', {
         method: 'POST',
@@ -207,7 +209,7 @@ export default function TryOn() {
                 <img
                   src={userImagePreview}
                   alt="User preview"
-                  className="w-full h-auto rounded-lg"
+                  className="w-full h-auto max-h-[500px] object-contain rounded-xl"
                 />
                 <button
                   className="absolute top-2 right-2 p-1 bg-white rounded-full shadow-lg"
@@ -259,7 +261,7 @@ export default function TryOn() {
                 <img
                   src={clothingImagePreview}
                   alt="Clothing preview"
-                  className="w-full h-auto rounded-lg"
+                  className="w-full h-auto max-h-[500px] object-contain rounded-xl"
                 />
                 <button
                   className="absolute top-2 right-2 p-1 bg-white rounded-full shadow-lg"
@@ -290,6 +292,23 @@ export default function TryOn() {
           value={garmentDescription}
           onChange={(e) => setGarmentDescription(e.target.value)}
         />
+          <div className="mt-4">
+    <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-2">
+      Garment Category
+    </label>
+    <select
+  name="category"
+  className="..."
+  value={category}
+  onChange={(e) => setCategory(e.target.value)}
+>
+  <option value="upper_body">Upper Body</option>
+  <option value="lower_body">Lower Body</option>
+  <option value="dresses">Dresses</option>
+</select>
+
+</div>
+
       </div>
 
       {/* Process Button */}
@@ -335,7 +354,7 @@ export default function TryOn() {
               : `data:image/jpeg;base64,${processedImage}`
           }
           alt="Processed try-on result"
-          className="w-full h-auto rounded-lg object-cover"
+          className="w-full max-w-[400px] mx-auto rounded-xl shadow-lg object-contain"
         />
       )}
     </div>

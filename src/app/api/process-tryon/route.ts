@@ -11,6 +11,7 @@ export async function POST(req: Request) {
     const personImage = formData.get('personImage') as File;
     const clothingImage = formData.get('clothingImage') as File;
     const garmentDescription = formData.get('garmentDescription') as string;
+    const category = (formData.get('category') as string) || 'upper_body'
 
     if (!personImage || !clothingImage || !garmentDescription) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
@@ -32,7 +33,7 @@ export async function POST(req: Request) {
         human_img: humanBase64,
         garm_img: clothBase64,
         garment_des: garmentDescription,
-        category: 'upper_body',
+        category: category,
       },
     });
 
@@ -52,6 +53,7 @@ export async function POST(req: Request) {
     }
 
     console.log("✅ Final output from Replicate:", output);
+    console.log('CATEGORY SENT TO REPLICATE:', category);
 
     return NextResponse.json({ result: Array.isArray(output) ? output[0] : output });
   } catch (error: any) {
