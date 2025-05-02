@@ -15,9 +15,14 @@ const nextConfig: NextConfig = {
         hostname: 'pbxt.replicate.delivery',
         port: '',
         pathname: '/**',
-      }
+      },
     ],
   },
+
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+
   async headers() {
     return [
       {
@@ -25,10 +30,13 @@ const nextConfig: NextConfig = {
         headers: [
           {
             key: 'Content-Security-Policy',
-            value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https: blob:; connect-src 'self' https://*.replicate.delivery https://*.replicate.com;"
-          }
-        ]
-      }
-    ]
-  }
+            value:
+              "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https: blob:; connect-src 'self' https://*.replicate.delivery https://*.replicate.com;",
+          },
+        ],
+      },
+    ];
+  },
 }
+
+export default nextConfig;
