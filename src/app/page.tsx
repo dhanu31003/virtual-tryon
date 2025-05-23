@@ -39,7 +39,6 @@ export default function Home() {
 
           {/* Feature Cards */}
           <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Upload Card */}
             <div 
               className="feature-card group h-[250px] cursor-pointer"
               onClick={() => router.push('/try-on')}
@@ -54,7 +53,6 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Choose Card */}
             <div 
               className="feature-card group h-[250px] cursor-pointer"
               onClick={() => router.push('/wardrobe')}
@@ -69,7 +67,6 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Result Card */}
             <div 
               className="feature-card group h-[250px] cursor-pointer"
               onClick={() => router.push('/history')}
@@ -94,6 +91,22 @@ export default function Home() {
               Start Virtual Try-On
             </Link>
           </div>
+        </div>
+      </div>
+
+      {/* About Section */}
+      <div className="bg-white py-16 border-t border-gray-200">
+        <div className="max-w-4xl mx-auto px-4 text-center">
+          <h2 className="text-3xl font-bold text-purple-600 mb-4">About This Project</h2>
+          <p className="text-gray-700 text-lg mb-4">
+            VirtualTryOn is a smart virtual fitting room built using advanced AI technology to help users visualize clothing on themselves without ever entering a store.
+          </p>
+          <p className="text-gray-600 mb-2">
+            Upload your photo, select a garment from the wardrobe, and instantly view the try-on result. Our model is powered by image synthesis AI and optimized for upper body, lower body, and dress garments.
+          </p>
+          <p className="text-gray-500">
+            Designed and developed with ❤️ by <span className="font-semibold text-purple-500">Dhanush Pujari</span>.
+          </p>
         </div>
       </div>
     </div>
