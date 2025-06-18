@@ -100,29 +100,89 @@ export default function ThreeDTryOnPage() {
         <div className="mt-4 text-red-500">{error}</div>
       )}
       {modelUrls.length > 0 && (
-        <div className="mt-8 w-full overflow-x-auto">
-          <div className="flex gap-8">
-            {modelUrls.map((url, idx) => (
-              <div key={idx} className="min-w-[350px] h-[500px] flex-shrink-0 bg-gray-100 rounded-lg shadow-lg">
-                <model-viewer
-                  src={url}
-                  alt="3D Model"
-                  auto-rotate
-                  camera-controls
-                  ar
-                  shadow-intensity="1"
-                  environment-image="neutral"
-                  exposure="0.2"
-                  camera-orbit="0deg 75deg 105%"
-                  min-camera-orbit="auto auto 50%"
-                  max-camera-orbit="auto auto 200%"
-                  style={{ width: '100%', height: '100%', borderRadius: '0.5rem' }}
-                ></model-viewer>
+        <div className="mt-8 w-full">
+          <div className="relative bg-gray-100 rounded-xl shadow-lg overflow-hidden">
+            {/* Loading indicator */}
+            {loading && (
+              <div className="absolute inset-0 flex items-center justify-center bg-gray-100 z-10">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
               </div>
-            ))}
+            )}
+            <model-viewer
+              src={modelUrls[0]}
+              alt="3D Try-on Model"
+              loading="eager"
+              camera-controls
+              auto-rotate
+              ar
+              ar-modes="webxr scene-viewer quick-look"
+              environment-image="neutral"
+              shadow-intensity="1"
+              exposure="0.75"
+              camera-orbit="-30deg 75deg 105%"
+              min-camera-orbit="auto auto 5%"
+              max-camera-orbit="auto auto 200%"
+              camera-target="0m 0m 0m"
+              field-of-view="30deg"
+              interaction-prompt="none"
+              style={{
+                width: '100%',
+                height: '70vh',
+                backgroundColor: '#f3f4f6',
+              }}
+              onError={() => setError('Failed to load 3D model.')}
+              onLoad={() => setLoading(false)}
+            >
+              {/* Progress bar */}
+              <div slot="progress-bar" className="progress-bar">
+                <div className="update-bar"></div>
+              </div>
+              {/* AR button */}
+              <button slot="ar-button" className="absolute bottom-4 right-4 px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition-colors">
+                👀 View in AR
+              </button>
+              {/* Fallback for browsers that don't support model-viewer */}
+              <div className="text-center text-gray-500 mt-4" slot="fallback">
+                <p>
+                  Your browser does not support 3D model viewing.<br />
+                  <a
+                    href={modelUrls[0]}
+                    download="output.obj"
+                    className="text-blue-600 underline"
+                  >
+                    Download the OBJ file
+                  </a> and open it in a 3D viewer like Blender or Meshlab.
+                </p>
+              </div>
+            </model-viewer>
           </div>
-          <div className="mt-4 text-center text-gray-600">
-            ✨ Drag to rotate • Pinch to zoom • Double-click to reset view
+          {/* Controls help */}
+          <div className="mt-4 p-4 bg-white rounded-lg shadow-sm">
+            <h3 className="text-lg font-medium text-gray-900 mb-2">🎮 Controls</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-gray-600">
+              <div className="flex items-center space-x-2">
+                <span className="bg-gray-100 p-1 rounded">🖱️ Left Click + Drag</span>
+                <span>Rotate the model</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <span className="bg-gray-100 p-1 rounded">🖱️ Right Click + Drag</span>
+                <span>Pan the view</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <span className="bg-gray-100 p-1 rounded">⚡ Mouse Wheel</span>
+                <span>Zoom in/out</span>
+              </div>
+            </div>
+            {/* Download link for OBJ */}
+            <div className="mt-4 text-center">
+              <a
+                href={modelUrls[0]}
+                download="output.obj"
+                className="inline-block px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition-colors"
+              >
+                ⬇️ Download 3D Model (OBJ)
+              </a>
+            </div>
           </div>
         </div>
       )}

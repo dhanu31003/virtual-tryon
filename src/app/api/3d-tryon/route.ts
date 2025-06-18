@@ -53,7 +53,9 @@ export async function POST(req: Request) {
             scriptPath,
             '--image', personPath,
             '--out', modelDir
-          ])
+          ], {
+            env: { ...process.env, PYTHONIOENCODING: 'utf-8' } // Ensure UTF-8 encoding
+          })
           
           let stdout = ''
           let stderr = ''

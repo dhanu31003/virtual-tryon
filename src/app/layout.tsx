@@ -21,10 +21,38 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        {/* model-viewer script */}
         <script 
           type="module" 
           src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.3.0/model-viewer.min.js"
         ></script>
+        {/* model-viewer styles */}
+        <style>{`
+          model-viewer {
+            --poster-color: transparent;
+            --progress-bar-height: 2px;
+            --progress-bar-color: #4f46e5;
+          }
+          .progress-bar {
+            display: block;
+            width: 100%;
+            height: var(--progress-bar-height);
+            background: linear-gradient(to right, #4f46e5 var(--progress-mask), transparent 0);
+            transition: --progress-mask 0.2s;
+            --progress-mask: 0%;
+          }
+          .progress-bar.hide {
+            visibility: hidden;
+            transition: visibility 0.3s, --progress-mask 0.2s;
+          }
+          .update-bar {
+            background-color: var(--progress-bar-color);
+            width: 100%;
+            height: 100%;
+            transform-origin: top left;
+            transform: scaleX(var(--progress));
+          }
+        `}</style>
       </head>
       <body className={inter.className}>
         <nav className="bg-white shadow-sm">

@@ -38,7 +38,7 @@ export default function Home() {
           </div>
 
           {/* Feature Cards */}
-          <div className="mt-16 grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
             <div 
               className="feature-card group h-[250px] cursor-pointer"
               onClick={() => router.push('/try-on')}
@@ -77,20 +77,6 @@ export default function Home() {
                   <SparklesIcon className="w-12 h-12 mb-4 text-pink-500 group-hover:animate-bounce" />
                   <h3 className="text-xl font-semibold mb-4 text-gray-800 group-hover:text-gray-900">See Results</h3>
                   <p className="text-gray-600 text-center group-hover:text-gray-800">Experience how clothes look on you instantly</p>
-                </div>
-              </div>
-            </div>
-
-            <div 
-              className="feature-card group h-[250px] cursor-pointer"
-              onClick={() => router.push('/3D-TryOn')}
-            >
-              <div className="relative p-6 bg-white rounded-xl shadow-xl transition-all duration-300 transform group-hover:scale-105 h-full flex flex-col items-center">
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-50 to-green-50 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                <div className="relative z-10">
-                  <Shirt className="w-12 h-12 mb-4 text-green-500 group-hover:animate-bounce" />
-                  <h3 className="text-xl font-semibold mb-4 text-gray-800 group-hover:text-gray-900">3D Try-On</h3>
-                  <p className="text-gray-600 text-center group-hover:text-gray-800">Upload your photo and clothing to see a 3D try-on</p>
                 </div>
               </div>
             </div>
